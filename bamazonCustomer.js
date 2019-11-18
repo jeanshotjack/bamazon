@@ -9,19 +9,35 @@ var connection = mysql.createConnection({
 
     user: "root",
     password: "2019codecamp",
-    database: ""
+    database: "bamazon"
 })
 
+
+// Connecty to database
+// test if connection works, if it does run promptUser function
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\r\n");
-    chartSearch();
+
+    promptUser();
 });
-// Connecty to database
-// test if connection works, if it does run promptUser function
 
+// promptUser function to display products
+var promptUser = function() {
+	var query = "Select * FROM products";
+	connection.query(query, function(err, res) {
 
-//In promptUser function
+		if (err) throw err;
+
+        console.log("Welcome to bamazon. Here is a list of our available products: \r\n")
+		for (var i = 0; i < res.length; i++) {
+			console.log("Product ID: " + res[i].id + " || Product Name: " +
+						res[i].product + " || Price: " + res[i].price) + "\r\n";
+        }
+    
+    // include function to ask user for ID of product as input
+	});
+};
 // display avail products display id numbers
 // use inquirer to ask user for ID of the products they want - as input
 // query db to check if ID number exists in DB 
