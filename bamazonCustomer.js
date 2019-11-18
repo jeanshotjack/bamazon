@@ -35,9 +35,52 @@ var promptUser = function() {
 						res[i].product + " || Price: " + res[i].price) + "\r\n";
         }
     
-    // include function to ask user for ID of product as input
+    buy();
 	});
 };
+
+var buy = function() {
+	inquirer.prompt([{
+		name: "ID",
+		type: "input",
+		message: "Enter the product ID of the item you wish to purchase:",
+		validate: function() {
+			if (isNaN() === false) { // not sure what to input for NaN????
+				return true;
+			}
+			return false;
+		}
+        }, 
+        {
+		name: "amount",
+		type: "input",
+		message: "Enter the quantity:",
+		validate: function() {
+			if (isNaN() === false) {
+				return true;
+			}
+			return false
+		}
+	    }]).then(function(res1) {
+
+		var query = "Select quantity, price, department FROM products WHERE ?";
+		connection.query(query, { "id": res1.ID}, function(err, res) {
+			
+			if (err) throw err;
+
+			var stock = res[0].quantity;
+
+			if (stock >= res1.amount) {
+                // make the purhcase happen here
+			
+            }
+				console.log("There isn't enough stock left!");
+
+                // Give user option to buy something else or to exit
+		});
+	});
+};
+
 // display avail products display id numbers
 // use inquirer to ask user for ID of the products they want - as input
 // query db to check if ID number exists in DB 
