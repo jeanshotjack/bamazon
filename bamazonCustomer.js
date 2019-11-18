@@ -23,62 +23,64 @@ connection.connect(function (err) {
 });
 
 // promptUser function to display products
-var promptUser = function() {
-	var query = "Select * FROM products";
-	connection.query(query, function(err, res) {
+var promptUser = function () {
+    var query = "Select * FROM products";
+    connection.query(query, function (err, res) {
 
-		if (err) throw err;
+        if (err) throw err;
 
         console.log("Welcome to bamazon. Here is a list of our available products: \r\n")
-		for (var i = 0; i < res.length; i++) {
-			console.log("Product ID: " + res[i].id + " || Product Name: " +
-						res[i].product + " || Price: " + res[i].price) + "\r\n";
+        for (var i = 0; i < res.length; i++) {
+            console.log("Product ID: " + res[i].id + " || Product Name: " +
+                res[i].product + " || Price: " + res[i].price) + "\r\n";
         }
-    
-    buy();
-	});
+
+        buy();
+    });
 };
 
-var buy = function() {
-	inquirer.prompt([{
-		name: "ID",
-		type: "input",
-		message: "Enter the product ID of the item you wish to purchase:",
-		validate: function() {
-			if (isNaN() === false) { // not sure what to input for NaN????
-				return true;
-			}
-			return false;
-		}
-        }, 
-        {
-		name: "amount",
-		type: "input",
-		message: "Enter the quantity:",
-		validate: function() {
-			if (isNaN() === false) {
-				return true;
-			}
-			return false
-		}
-	    }]).then(function(res1) {
-
-		var query = "Select quantity, price, department FROM products WHERE ?";
-		connection.query(query, { "id": res1.ID}, function(err, res) {
-			
-			if (err) throw err;
-
-			var stock = res[0].quantity;
-
-			if (stock >= res1.amount) {
-                // make the purhcase happen here
-			
+var buy = function () {
+    inquirer.prompt([{
+        name: "ID",
+        type: "input",
+        message: "Enter the product ID of the item you wish to purchase:",
+        validate: function (value) {
+            if (isNaN(value) === false) { // not sure what to input for NaN????
+                return true;
             }
-				console.log("There isn't enough stock left!");
+            return false;
+        }
+    },
+    {
+        name: "amount",
+        type: "input",
+        message: "Enter the quantity:",
+        validate: function (value) {
+            if (isNaN(value) === false) {
+                return true;
+            }
+            return false
+        }
+    }]).then(function (res1) {
 
-                // Give user option to buy something else or to exit
-		});
-	});
+        var query = "Select * FROM products WHERE ?";
+        connection.query(query, { "id": res1.ID }, function (err, res) {
+
+            if (err) throw err;
+
+            var stock = res[0].quantity;
+
+            if (stock >= res1.amount) {
+                // make the purhcase happen here
+
+            }
+            else {
+                console.log("There isn't enough stock left!");
+
+                promptUser();
+            }
+        });
+    });
 };
 
 // display avail products display id numbers
