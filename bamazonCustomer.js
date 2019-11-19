@@ -20,6 +20,7 @@ connection.connect(function (err) {
     console.log("connected as id " + connection.threadId + "\r\n");
 
     promptUser();
+    
 });
 
 // promptUser function to display products

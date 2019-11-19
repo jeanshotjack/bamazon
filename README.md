@@ -2,12 +2,14 @@
 bamazon is a CLI storefront that utilizes MySQL and MySQL Workbench to create a database and Node.js to call and manipulate the database.
 
 ## Demo
+See it in action: https://drive.google.com/file/d/1kZKJ_UIUqSBWQ_r6nVtuEHOjEtjev1t2/view
 
 
 ## How-To
 - Clone my repo. Then in your command line, `npm install inquirer` and `npm install mysql`. Open file `bamazonSeeds.sql`, copy the commands, and paste into MySQL Workbench. 
 - In your command line, enter `node bamazonCustomer.js`
 - Follow the prompts. Watch as the quantities in the database change!
+
 
 ## Connect
 First, we require the npm packages we will be using in the app. We connect to our database and test if the connection is running. If it is, we call the function `promptUser()`.
