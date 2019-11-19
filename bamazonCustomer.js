@@ -82,7 +82,7 @@ var buy = function () {
             type: "input",
             message: "Enter the product ID of the item you wish to purchase: \r\n",
             validate: function (value) {
-                if (isNaN(value) === false) { // not sure what to input for NaN????
+                if (isNaN(value) === false) { 
                     return true;
                 }
                 return false;
@@ -109,9 +109,29 @@ var buy = function () {
             var stock = res[0].quantity;
 
             if (stock >= res1.amount) {
-                //purchase function here
+                newStock = stock - res1.amount;
+
+                connection.query("UPDATE products SET ? WHERE ?",
+                [
+                    {
+                    "quantity": newStock
+                },
+                {
+                    "id": res1.ID
+                } 
+            ],
+            function (err, res1) {
+                if (err) throw err;
+                purchasePrice = res1.amount * res1.price;
+
+                console.log("Your purchase is successful and has cost you $" + purchasePrice);
+
+                promptUser2();
+            }
+                ); 
 
             }
+
             else {
                 console.log("There isn't enough stock left! \r\n");
 
@@ -121,7 +141,11 @@ var buy = function () {
     });
 };
 
+var purchase = function(err, res2) {
+    if (err) throw err;
 
+
+}
 // display avail products display id numbers
 // use inquirer to ask user for ID of the products they want - as input
 // query db to check if ID number exists in DB 
