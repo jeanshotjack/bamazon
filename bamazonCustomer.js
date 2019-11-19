@@ -82,7 +82,7 @@ var buy = function () {
             type: "input",
             message: "\r\nEnter the product ID of the item you wish to purchase:",
             validate: function (value) {
-                if (isNaN(value) === false) { 
+                if (isNaN(value) === false) {
                     return true;
                 }
                 return false;
@@ -105,36 +105,40 @@ var buy = function () {
         connection.query(query, { "id": res1.ID }, function (err, res) {
 
             if (err) throw err;
+            // IDEALLY, THE FOLLOWING LINES WOULD CHECK TO MAKE SURE THE ITEM EXISTS
+            // for (i = 0; i < res.length; i++) {
+            //     var item = res[i].id;
+            //     if (item == res1.ID) {
 
-            var stock = res[0].quantity;
-            var price = res[0].price;
+                    var stock = res[0].quantity;
+                    var price = res[0].price;
 
-            if (stock >= res1.amount) {
-                newStock = stock - res1.amount;
+                    if (stock >= res1.amount) {
+                        newStock = stock - res1.amount;
 
-                connection.query("UPDATE products SET ? WHERE ?",
-                [
-                    {
-                    "quantity": newStock
-                },
-                {
-                    "id": res1.ID
-                } 
-            ]);
+                        connection.query("UPDATE products SET ? WHERE ?",
+                            [
+                                {
+                                    "quantity": newStock
+                                },
+                                {
+                                    "id": res1.ID
+                                }
+                            ]);
 
-                purchasePrice = res1.amount * price;
+                        purchasePrice = res1.amount * price;
 
-                console.log("\r\nYour purchase is successful and has cost you $" + purchasePrice);
+                        console.log("\r\nYour purchase is successful and has cost you $" + purchasePrice);
 
-                promptUser2();
+                        promptUser2();
 
-            }
+                    }
 
-            else {
-                console.log("\r\nThere isn't enough stock left! \r\n");
+                    else {
+                        console.log("\r\nThere isn't enough stock left! \r\n");
 
-                promptUser2();
-            }
+                        promptUser2();
+                    }
         });
     });
 };
