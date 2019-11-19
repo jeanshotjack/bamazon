@@ -31,7 +31,7 @@ var promptUser = function () {
 
         console.log("Welcome to bamazon. Here is a list of our available products: \r\n")
         for (var i = 0; i < res.length; i++) {
-            console.log("Product ID: " + res[i].id + " || Product Name: " +
+            console.log("\r\nProduct ID: " + res[i].id + " || Product Name: " +
                 res[i].product + " || Price: " + res[i].price) + "\r\n\r\n";
         }
 
@@ -39,7 +39,7 @@ var promptUser = function () {
             {
                 name: "choice",
                 type: "list",
-                message: "would you like to buy or exit? \r\n",
+                message: "\r\nwould you like to buy or exit?",
                 choices: ["buy", "exit"]
             }
         ]).then(function (answer) {
@@ -61,7 +61,7 @@ var promptUser2 = function () {
         {
             name: "choice",
             type: "list",
-            message: "would you like to buy or exit? \r\n",
+            message: "\r\nwould you like to buy or exit?",
             choices: ["buy", "exit"]
         }
     ]).then(function (answer) {
@@ -80,7 +80,7 @@ var buy = function () {
         {
             name: "ID",
             type: "input",
-            message: "Enter the product ID of the item you wish to purchase: \r\n",
+            message: "\r\nEnter the product ID of the item you wish to purchase:",
             validate: function (value) {
                 if (isNaN(value) === false) { 
                     return true;
@@ -91,7 +91,7 @@ var buy = function () {
         {
             name: "amount",
             type: "input",
-            message: "Enter the quantity: \r\n",
+            message: "\r\nEnter the quantity:",
             validate: function (value) {
                 if (isNaN(value) === false) {
                     return true;
@@ -107,6 +107,7 @@ var buy = function () {
             if (err) throw err;
 
             var stock = res[0].quantity;
+            var price = res[0].price;
 
             if (stock >= res1.amount) {
                 newStock = stock - res1.amount;
@@ -119,21 +120,18 @@ var buy = function () {
                 {
                     "id": res1.ID
                 } 
-            ],
-            function (err, res1) {
-                if (err) throw err;
-                purchasePrice = res1.amount * res1.price;
+            ]);
 
-                console.log("Your purchase is successful and has cost you $" + purchasePrice);
+                purchasePrice = res1.amount * price;
+
+                console.log("\r\nYour purchase is successful and has cost you $" + purchasePrice);
 
                 promptUser2();
-            }
-                ); 
 
             }
 
             else {
-                console.log("There isn't enough stock left! \r\n");
+                console.log("\r\nThere isn't enough stock left! \r\n");
 
                 promptUser2();
             }
@@ -141,11 +139,6 @@ var buy = function () {
     });
 };
 
-var purchase = function(err, res2) {
-    if (err) throw err;
-
-
-}
 // display avail products display id numbers
 // use inquirer to ask user for ID of the products they want - as input
 // query db to check if ID number exists in DB 
